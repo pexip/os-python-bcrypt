@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+export DH_VERBOSE=1
+export PYBUILD_NAME=bcrypt
+export DEB_BUILD_MAINT_OPTIONS=hardening=+all
+
+%:
+	dh $@ --with python2,python3 --buildsystem=pybuild
+
+override_dh_auto_test:
+	PYBUILD_SYSTEM=custom PYBUILD_TEST_ARGS="{interpreter} -m pytest -v -x" dh_auto_test
+
+override_dh_installdocs:
+	dh_installdocs -A README.rst
+
+override_dh_installchangelogs:
+	sed -n '/'Changelog'/,/'Usage'/p' README.rst > .pybuild/changelog
+	dh_installchangelogs -A .pybuild/changelog

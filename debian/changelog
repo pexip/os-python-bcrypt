@@ -1,0 +1,183 @@
+python-bcrypt (3.1.6-1) unstable; urgency=medium
+
+  * New upstream release.
+  * deb/control:
+    + bump standards to 4.3.0 (no changes needed).
+  * deb/copyright:
+    + expand copyright span to 2019.
+
+ -- Daniel Stender <stender@debian.org>  Sun, 27 Jan 2019 13:42:48 +0100
+
+python-bcrypt (3.1.5-1) unstable; urgency=medium
+
+  * New upstream release.
+  * add debian/clean (cleaning .pytest_cache/).
+
+ -- Daniel Stender <stender@debian.org>  Wed, 19 Dec 2018 12:15:31 +0100
+
+python-bcrypt (3.1.4-3) unstable; urgency=medium
+
+  * deb/control:
+    + build against default python3 interpreter.
+    + add !nocheck build profile switch to pytest packages.
+    + bump standards to 4.2.1 (no further changes needed).
+  * deb/rules:
+    + build with DH_VERBOSE=1 (according to standards 4.2.0).
+    + bump hardening flags to +all.
+  * deb/tests:
+    + use AUTOPKGTEST_TMP instead of ADTTMP [Ondřej Nový].
+  * build with debhelper level 11 (changes in deb/compat and deb/control).
+
+ -- Daniel Stender <stender@debian.org>  Thu, 01 Nov 2018 23:55:22 +0100
+
+python-bcrypt (3.1.4-2) unstable; urgency=medium
+
+  * deb/control:
+    + bump standards to 4.1.3 (no changes needed).
+    + Set Vcs-* to salsa.debian.org [Ondřej Nový]
+  * deb/copyright:
+    + expand copyright span to 2018.
+
+ -- Daniel Stender <stender@debian.org>  Sun, 18 Feb 2018 21:00:12 +0100
+
+python-bcrypt (3.1.4-1) unstable; urgency=medium
+
+  * New upstream release.
+  * deb/control: bump standards version to 4.1.1 (no changed needed).
+
+ -- Daniel Stender <stender@debian.org>  Sun, 05 Nov 2017 11:06:08 +0100
+
+python-bcrypt (3.1.3-1) unstable; urgency=medium
+
+  * New upstream release.
+  * drop git-dpm regime (remove deb/.git-dpm, add deb/gbp.conf).
+  * use debhelper level 10 (changes in deb/compat and deb/control).
+  * deb/copyright:
+    + expanded copyright spans.
+    + use https in Format field according to standards update.
+    + bump standards version to 4.0.0 (no further changes needed).
+  * deb/control:
+    + build binaries for linux-any (Closes: #834062).
+  * deb/tests/control:
+    + add python{,3}-all packages to test deps.
+
+ -- Daniel Stender <stender@debian.org>  Thu, 20 Jul 2017 19:49:16 +0200
+
+python-bcrypt (3.1.2-1) unstable; urgency=medium
+
+  * New upstream release:
+    + drop 0001-fix-README-ascii-decoding-error.patch (applied
+      upstream).
+
+ -- Daniel Stender <stender@debian.org>  Fri, 23 Dec 2016 20:18:18 +0100
+
+python-bcrypt (3.1.1-1) unstable; urgency=medium
+
+  * New upstream release.
+  * rewritten fix-README-ascii-decoding-error.patch.
+
+ -- Daniel Stender <stender@debian.org>  Sat, 03 Dec 2016 10:47:56 +0100
+
+python-bcrypt (3.1.0-1) unstable; urgency=medium
+
+  * New upstream release.
+  * deb/rules:
+    + move dh_auto_test override up.
+    + add override for dh_installchangelogs (get changelog).
+  * drop import-tests-from-github.patch (applied upstream).
+
+ -- Daniel Stender <stender@debian.org>  Mon, 25 Jul 2016 23:30:44 +0200
+
+python-bcrypt (3.0.0-1) unstable; urgency=medium
+
+  * New upstream release (Closes: #824952).
+  * deb/control:
+    + updated an uploader email address.
+    + bumped standards to 3.9.8 (no changes needed).
+  * deb/copyright:
+    + expanded copyright spans, updated email addresses.
+    + updated copyright info for changed backend (OpenBSD instead of openwall).
+  * deb/rules:
+    + added DEB_BUILD_MAINT_OPTIONS export for BINDNOW.
+  * deb/upstream/signing-key.asc: updated (2048R/29F9ED98, Paul Kehrer).
+  * Added deb/source/options, fix-README-ascii-decoding-error.patch.
+
+    [ Ondřej Nový ]
+  * Fixed VCS URL (https)
+
+ -- Daniel Stender <stender@debian.org>  Tue, 28 Jun 2016 19:57:24 +0200
+
+python-bcrypt (2.0.0-2) unstable; urgency=medium
+
+  * Added import-tests-from-github.patch.
+  * deb/control: added python3-six to build-deps.
+  * deb/rules: removed test break failsafe from dh_auto_test override,
+    added customized py.test call.
+  * Added DEP-8 tests.
+
+ -- Daniel Stender <debian@danielstender.com>  Sun, 10 Jan 2016 23:10:49 +0100
+
+python-bcrypt (2.0.0-1) unstable; urgency=medium
+
+  [ Daniel Stender ]
+  * New upstream release (Closes: #803096).
+  * Switched upstream from py-bcrypt to pyuca/bcrypt (Closes: #796853).
+  * deb/control:
+    + changed Priority from "extra" to "optional".
+    + added Daniel Stender to Uploaders.
+    + added dh-python and python{,3}-cffi and to build depends.
+    + bumped Standards-Version to 3.9.6 (no changes needed).
+    + updated Homepage.
+    + added Vcs-Git and Vcs-Browser.
+    + removed extended infos in long description text concerning py-bcrypt,
+      made short description easier, updated URI of the mentioned paper.
+  * deb/copyright:
+    + updated.
+    + added Daniel Stender to copyright holders of debian/.
+  * deb/rules:
+    + added exports for DH_VERBOSE and DEB_BUILD_OPTIONS=nocheck.
+    + build with Pybuild.
+    + use override for dh_installdocs to contribute into both packages.
+  * deb/watch:
+    + watch bcrypt on Pypi.
+  * Added:
+    + deb/.git-dpm (Repo initialzed for Git-dpm).
+    + deb/upstream/signing-key.asc.
+  * Dropped:
+    + deb/manpage and deb/python-bcrypt.1 (belonging to py-bcrypt).
+    + deb/docs (using dh_installdocs in deb/rules).
+
+  [ Raphaël Hertzog ]
+  * Add build-dependencies on python{3,}-pytest and python-six that will be
+    useful once we have actual tests in the tarball.
+
+ -- Daniel Stender <debian@danielstender.com>  Fri, 08 Jan 2016 15:07:04 +0100
+
+python-bcrypt (0.4-2) unstable; urgency=medium
+
+  * Team upload.
+  * Build-depend on python-all-dev and python3-all-dev, instead of just
+    default python3?-dev. (Closes: #741770)
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Mon, 31 Mar 2014 22:40:17 +0100
+
+python-bcrypt (0.4-1) unstable; urgency=low
+
+  * New Upstream release
+  * Migrate to git-buildpackage
+  * Update control file to reflect more modern debian standards (no changes)
+  * Update to use debhelper 9
+  * Add source/format of "3.0 (quilt)"
+  * Fix spelling of parametrised throughout debian/ directory
+  * Update watch file to use google code
+  * Remove depricated pycompat file
+  * Update copyright file to be machine-readable
+
+ -- Simon Fondrie-Teitler <simonft@riseup.net>  Sat, 21 Sep 2013 16:26:21 -0500
+
+python-bcrypt (0.1-1) unstable; urgency=low
+
+  * Initial release (Closes: #454627)
+  * Added man page.
+
+ -- Kevin Coyner <kcoyner@debian.org>  Sat, 22 Dec 2007 13:45:05 -0500
