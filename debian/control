@@ -1,40 +1,22 @@
 Source: python-bcrypt
-Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
-Uploaders:
- Simon Fondrie-Teitler <simonft@riseup.net>,
- Daniel Stender <stender@debian.org>
+Maintainer: Debian Python Team <team+python@tracker.debian.org>
+Uploaders: Simon Fondrie-Teitler <simonft@riseup.net>
 Section: python
 Priority: optional
-Build-Depends: debhelper (>= 11),
+Build-Depends: debhelper-compat (= 12),
                dh-python,
-               python-dev,
-               python-setuptools,
-               python-cffi,
-               python-pytest <!nocheck>,
-               python-six,
-               python3-dev,
+               python3-all-dev,
                python3-setuptools,
                python3-cffi,
                python3-pytest <!nocheck>,
                python3-six
 Homepage: https://github.com/pyca/bcrypt
-Standards-Version: 4.3.0
-Vcs-Git: https://salsa.debian.org/python-team/modules/python-bcrypt.git
-Vcs-Browser: https://salsa.debian.org/python-team/modules/python-bcrypt
-
-Package: python-bcrypt
-Architecture: linux-any
-Depends: ${python:Depends}, ${misc:Depends}, ${shlibs:Depends}
-Description: password hashing library for Python
- bcrypt is a Python module which provides a password hashing method based on
- the Blowfish password hashing algorithm, as described in
- "A Future-Adaptable Password Scheme" by Niels Provos and David Mazieres:
- http://static.usenix.org/events/usenix99/provos.html.
- .
- This package provides the bcrypt Python module for Python 2.x.
+Standards-Version: 4.5.0
+Vcs-Git: https://salsa.debian.org/python-team/packages/python-bcrypt.git
+Vcs-Browser: https://salsa.debian.org/python-team/packages/python-bcrypt
 
 Package: python3-bcrypt
-Architecture: linux-any
+Architecture: linux-any kfreebsd-any
 Depends: ${python3:Depends}, ${misc:Depends}, ${shlibs:Depends}
 Description: password hashing library for Python 3
  bcrypt is a Python module which provides a password hashing method based on
