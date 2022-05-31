@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: bcrypt
-Version: 3.1.6
+Version: 3.1.7
 Summary: Modern password hashing for your software and your servers
 Home-page: https://github.com/pyca/bcrypt/
 Author: The Python Cryptographic Authority developers
@@ -15,6 +15,9 @@ Description: bcrypt
         
         .. image:: https://travis-ci.org/pyca/bcrypt.svg?branch=master
             :target: https://travis-ci.org/pyca/bcrypt
+        
+        .. image:: https://dev.azure.com/pyca/bcrypt/_apis/build/status/bcrypt-CI?branchName=master
+            :target: https://dev.azure.com/pyca/bcrypt/_build/latest?definitionId=8&branchName=master
         
         Good password hashing for your software and your servers
         
@@ -49,6 +52,13 @@ Description: bcrypt
         
         Changelog
         =========
+        
+        3.1.7
+        -----
+        
+        * Set a ``setuptools`` lower bound for PEP517 wheel building.
+        * We no longer distribute 32-bit ``manylinux1`` wheels. Continuing to produce
+          them was a maintenance burden.
         
         3.1.6
         -----
