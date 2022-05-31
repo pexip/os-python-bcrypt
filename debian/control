@@ -22,7 +22,7 @@ Homepage: https://github.com/pyca/bcrypt
 Standards-Version: 4.3.0
 Vcs-Git: https://salsa.debian.org/python-team/modules/python-bcrypt.git
 Vcs-Browser: https://salsa.debian.org/python-team/modules/python-bcrypt
-XS-Pexip-Upstream: http://ftp.debian.org/debian/ buster
+XS-Pexip-Upstream: http://deb.debian.org/debian/ bullseye
 
 Package: python-bcrypt
 Architecture: linux-any
