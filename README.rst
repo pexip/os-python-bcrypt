@@ -8,6 +8,9 @@ bcrypt
 .. image:: https://travis-ci.org/pyca/bcrypt.svg?branch=master
     :target: https://travis-ci.org/pyca/bcrypt
 
+.. image:: https://dev.azure.com/pyca/bcrypt/_apis/build/status/bcrypt-CI?branchName=master
+    :target: https://dev.azure.com/pyca/bcrypt/_build/latest?definitionId=8&branchName=master
+
 Good password hashing for your software and your servers
 
 
@@ -41,6 +44,13 @@ While bcrypt remains a good choice for password storage depending on your specif
 
 Changelog
 =========
+
+3.1.7
+-----
+
+* Set a ``setuptools`` lower bound for PEP517 wheel building.
+* We no longer distribute 32-bit ``manylinux1`` wheels. Continuing to produce
+  them was a maintenance burden.
 
 3.1.6
 -----

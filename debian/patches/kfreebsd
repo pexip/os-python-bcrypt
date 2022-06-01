@@ -1,0 +1,11 @@
+--- a/src/_csrc/portable_endian.h
++++ b/src/_csrc/portable_endian.h
+@@ -98,7 +98,7 @@
+ 
+ #   include <endian.h>
+ 
+-#elif defined(__NetBSD__) || defined(__FreeBSD__) || defined(__DragonFly__)
++#elif defined(__NetBSD__) || defined(__FreeBSD__) || defined(__DragonFly__) || defined(__FreeBSD_kernel__)
+ 
+ #   include <sys/endian.h>
+ 
