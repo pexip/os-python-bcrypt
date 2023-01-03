@@ -1,3 +1,26 @@
+python-bcrypt (3.2.2-1) unstable; urgency=medium
+
+  * Team upload
+  * The advertisement clause was removed with 3.1.7-1
+  * New upstream version 3.2.2
+  * Drop unneeded B-D python3-six
+
+ -- Bastian Germann <bage@debian.org>  Tue, 03 Jan 2023 23:03:20 +0100
+
+python-bcrypt (3.2.0-1) unstable; urgency=medium
+
+  * Team upload.
+
+  [ Gordon Ball ]
+  * Patch c extension to support build on hurd; patch from Samuel Thibault
+    (Closes: #976706)
+  * New upstream version 3.2.0
+  * Declare Rules-Requires-Root: no
+  * Standards-Version 4.6.0
+  * Debhelper compat 13
+
+ -- Gordon Ball <gordon@chronitis.net>  Sat, 09 Oct 2021 19:58:26 +0000
+
 python-bcrypt (3.1.7-4) unstable; urgency=medium
 
   * Team upload.

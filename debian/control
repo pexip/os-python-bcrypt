@@ -3,20 +3,20 @@ Maintainer: Debian Python Team <team+python@tracker.debian.org>
 Uploaders: Simon Fondrie-Teitler <simonft@riseup.net>
 Section: python
 Priority: optional
-Build-Depends: debhelper-compat (= 12),
+Build-Depends: debhelper-compat (= 13),
                dh-python,
                python3-all-dev,
                python3-setuptools,
                python3-cffi,
                python3-pytest <!nocheck>,
-               python3-six
 Homepage: https://github.com/pyca/bcrypt
-Standards-Version: 4.5.0
+Standards-Version: 4.6.0
 Vcs-Git: https://salsa.debian.org/python-team/packages/python-bcrypt.git
 Vcs-Browser: https://salsa.debian.org/python-team/packages/python-bcrypt
+Rules-Requires-Root: no
 
 Package: python3-bcrypt
-Architecture: linux-any kfreebsd-any
+Architecture: any
 Depends: ${python3:Depends}, ${misc:Depends}, ${shlibs:Depends}
 Description: password hashing library for Python 3
  bcrypt is a Python module which provides a password hashing method based on
