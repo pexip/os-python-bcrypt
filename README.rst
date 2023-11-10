@@ -5,11 +5,8 @@ bcrypt
     :target: https://pypi.org/project/bcrypt/
     :alt: Latest Version
 
-.. image:: https://travis-ci.org/pyca/bcrypt.svg?branch=master
-    :target: https://travis-ci.org/pyca/bcrypt
-
-.. image:: https://dev.azure.com/pyca/bcrypt/_apis/build/status/bcrypt-CI?branchName=master
-    :target: https://dev.azure.com/pyca/bcrypt/_build/latest?definitionId=8&branchName=master
+.. image:: https://github.com/pyca/bcrypt/workflows/CI/badge.svg?branch=main
+    :target: https://github.com/pyca/bcrypt/actions?query=workflow%3ACI+branch%3Amain
 
 Good password hashing for your software and your servers
 
@@ -37,6 +34,13 @@ For Fedora and RHEL-derivatives, the following command will ensure that the requ
 
     $ sudo yum install gcc libffi-devel python-devel
 
+For Alpine, the following command will ensure that the required dependencies are installed:
+
+.. code:: bash
+
+    $ apk add --update musl-dev gcc libffi-dev
+
+
 Alternatives
 ============
 
@@ -44,6 +48,33 @@ While bcrypt remains a good choice for password storage depending on your specif
 
 Changelog
 =========
+
+3.2.2
+-----
+
+* Fixed packaging of ``py.typed`` files in wheels so that ``mypy`` works.
+
+3.2.1
+-----
+
+* Added support for compilation on z/OS
+* The next release of ``bcrypt`` with be 4.0 and it will require Rust at
+  compile time, for users building from source. There will be no additional
+  requirement for users who are installing from wheels. Users on most
+  platforms will be able to obtain a wheel by making sure they have an up to
+  date ``pip``. The minimum supported Rust version will be 1.56.0.
+* This will be the final release for which we ship ``manylinux2010`` wheels.
+  Going forward the minimum supported manylinux ABI for our wheels will be
+  ``manylinux2014``. The vast majority of users will continue to receive
+  ``manylinux`` wheels provided they have an up to date ``pip``.
+
+
+3.2.0
+-----
+
+* Added typehints for library functions.
+* Dropped support for Python versions less than 3.6 (2.7, 3.4, 3.5).
+* Shipped ``abi3`` Windows wheels (requires pip >= 20).
 
 3.1.7
 -----
@@ -191,7 +222,7 @@ Compatibility
 -------------
 
 This library should be compatible with py-bcrypt and it will run on Python
-2.7, 3.4+, and PyPy 2.6+.
+3.6+, and PyPy 3.
 
 C Code
 ------
@@ -204,7 +235,7 @@ Security
 ``bcrypt`` follows the `same security policy as cryptography`_, if you
 identify a vulnerability, we ask you to contact us privately.
 
-.. _`same security policy as cryptography`: https://cryptography.io/en/latest/security/
+.. _`same security policy as cryptography`: https://cryptography.io/en/latest/security.html
 .. _`standard library`: https://docs.python.org/3/library/hashlib.html#hashlib.scrypt
 .. _`argon2_cffi`: https://argon2-cffi.readthedocs.io
 .. _`cryptography`: https://cryptography.io/en/latest/hazmat/primitives/key-derivation-functions/#cryptography.hazmat.primitives.kdf.scrypt.Scrypt
