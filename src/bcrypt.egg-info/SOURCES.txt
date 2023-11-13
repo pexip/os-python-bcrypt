@@ -18,6 +18,8 @@ src/_csrc/sha2.h
 src/_csrc/timingsafe_bcmp.c
 src/bcrypt/__about__.py
 src/bcrypt/__init__.py
+src/bcrypt/_bcrypt.pyi
+src/bcrypt/py.typed
 src/bcrypt.egg-info/PKG-INFO
 src/bcrypt.egg-info/SOURCES.txt
 src/bcrypt.egg-info/dependency_links.txt

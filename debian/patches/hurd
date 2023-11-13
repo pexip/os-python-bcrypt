@@ -1,0 +1,21 @@
+From: Samuel Thibault <sthibault@debian.org>
+Date: Sat, 9 Oct 2021 19:15:23 +0000
+Subject: Enable hurd build (#976706)
+
+---
+ src/_csrc/portable_endian.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/_csrc/portable_endian.h b/src/_csrc/portable_endian.h
+index c4ee7bd..69d8a08 100644
+--- a/src/_csrc/portable_endian.h
++++ b/src/_csrc/portable_endian.h
+@@ -13,7 +13,7 @@
+ 
+ #endif
+ 
+-#if defined(__linux__) || defined(__CYGWIN__)
++#if defined(__linux__) || defined(__CYGWIN__) || defined(__GNU__)
+ /* Define necessary macros for the header to expose all fields. */
+ #   if !defined(_BSD_SOURCE)
+ #       define _BSD_SOURCE
