@@ -1,3 +1,36 @@
+python-bcrypt (4.2.0-2.1) unstable; urgency=medium
+
+  * Team upload.
+  * Rebuild with Python 3.13 support.
+
+ -- Thomas Goirand <zigo@debian.org>  Mon, 18 Nov 2024 11:04:06 +0100
+
+python-bcrypt (4.2.0-2) unstable; urgency=medium
+
+  * Team upload.
+  * Drop patch to use base64 0.21.x (closes: #1084329).
+
+ -- Colin Watson <cjwatson@debian.org>  Mon, 07 Oct 2024 15:28:31 +0100
+
+python-bcrypt (4.2.0-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream version 4.2.0 (Closes: #1078400)
+
+ -- Bastian Germann <bage@debian.org>  Thu, 15 Aug 2024 14:42:42 +0200
+
+python-bcrypt (4.1.2-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream version 4.1.2
+  * d/watch: Scan GitHub
+  * d/copyright: Drop ISC and BSD-3-Clause
+  * Patch: Relax base64 dependency
+  * Set up build for Rust
+  * Record the integrated pkgs in Static-Built-Using
+
+ -- Bastian Germann <bage@debian.org>  Wed, 26 Jun 2024 20:51:57 +0200
+
 python-bcrypt (3.2.2-1) unstable; urgency=medium
 
   * Team upload
