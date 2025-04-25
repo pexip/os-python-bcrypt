@@ -8,7 +8,8 @@ bcrypt
 .. image:: https://github.com/pyca/bcrypt/workflows/CI/badge.svg?branch=main
     :target: https://github.com/pyca/bcrypt/actions?query=workflow%3ACI+branch%3Amain
 
-Good password hashing for your software and your servers
+Acceptable password hashing for your software and your servers (but you should
+really use argon2id or scrypt)
 
 
 Installation
@@ -20,34 +21,84 @@ To install bcrypt, simply:
 
     $ pip install bcrypt
 
-Note that bcrypt should build very easily on Linux provided you have a C compiler, headers for Python (if you're not using pypy), and headers for the libffi libraries available on your system.
+Note that bcrypt should build very easily on Linux provided you have a C
+compiler and a Rust compiler (the minimum supported Rust version is 1.56.0).
 
 For Debian and Ubuntu, the following command will ensure that the required dependencies are installed:
 
 .. code:: bash
 
-    $ sudo apt-get install build-essential libffi-dev python-dev
+    $ sudo apt-get install build-essential cargo
 
 For Fedora and RHEL-derivatives, the following command will ensure that the required dependencies are installed:
 
 .. code:: bash
 
-    $ sudo yum install gcc libffi-devel python-devel
+    $ sudo yum install gcc cargo
 
 For Alpine, the following command will ensure that the required dependencies are installed:
 
 .. code:: bash
 
-    $ apk add --update musl-dev gcc libffi-dev
+    $ apk add --update musl-dev gcc cargo
 
 
 Alternatives
 ============
 
-While bcrypt remains a good choice for password storage depending on your specific use case you may also want to consider using scrypt (either via `standard library`_ or `cryptography`_) or argon2id via `argon2_cffi`_.
+While bcrypt remains an acceptable choice for password storage, depending on your specific use case you may also want to consider using scrypt (either via `standard library`_ or `cryptography`_) or argon2id via `argon2_cffi`_.
 
 Changelog
 =========
+
+4.2.0
+-----
+
+* Bump Rust dependency versions
+* Removed the ``BCRYPT_ALLOW_RUST_163`` environment variable.
+
+4.1.3
+-----
+
+* Bump Rust dependency versions
+
+4.1.2
+-----
+
+* Publish both ``py37`` and ``py39`` wheels. This should resolve some errors
+  relating to initializing a module multiple times per process.
+
+4.1.1
+-----
+
+* Fixed the type signature on the ``kdf`` method.
+* Fixed packaging bug on Windows.
+* Fixed incompatibility with passlib package detection assumptions.
+
+4.1.0
+-----
+
+* Dropped support for Python 3.6.
+* Bumped MSRV to 1.64. (Note: Rust 1.63 can be used by setting the ``BCRYPT_ALLOW_RUST_163`` environment variable)
+
+4.0.1
+-----
+
+* We now build PyPy ``manylinux`` wheels.
+* Fixed a bug where passing an invalid ``salt`` to ``checkpw`` could result in
+  a ``pyo3_runtime.PanicException``. It now correctly raises a ``ValueError``.
+
+4.0.0
+-----
+
+* ``bcrypt`` is now implemented in Rust. Users building from source will need
+  to have a Rust compiler available. Nothing will change for users downloading
+  wheels.
+* We no longer ship ``manylinux2010`` wheels. Users should upgrade to the latest
+  ``pip`` to ensure this doesn’t cause issues downloading wheels on their
+  platform. We now ship ``manylinux_2_28`` wheels for users on new enough platforms.
+* ``NUL`` bytes are now allowed in inputs.
+
 
 3.2.2
 -----
@@ -223,11 +274,6 @@ Compatibility
 
 This library should be compatible with py-bcrypt and it will run on Python
 3.6+, and PyPy 3.
-
-C Code
-------
-
-This library uses code from OpenBSD.
 
 Security
 --------

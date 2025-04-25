@@ -1,9 +1,6 @@
-import os
-
 import pytest
 
 import bcrypt
-
 
 _test_vectors = [
     (
@@ -144,6 +141,20 @@ _test_vectors = [
         b"$2a$05$/OK.fbVrR/bpIqNJ5ianF.",
         b"$2a$05$/OK.fbVrR/bpIqNJ5ianF.Sa7shbm4.OzKpvFnX1pQLmQW96oUlCq",
     ),
+    (
+        b"}>\xb3\xfe\xf1\x8b\xa0\xe6(\xa2Lzq\xc3P\x7f\xcc\xc8b{\xf9\x14\xf6"
+        b"\xf6`\x81G5\xec\x1d\x87\x10\xbf\xa7\xe1}I7 \x96\xdfc\xf2\xbf\xb3Vh"
+        b"\xdfM\x88q\xf7\xff\x1b\x82~z\x13\xdd\xe9\x84\x00\xdd4",
+        b"$2b$10$keO.ZZs22YtygVF6BLfhGO",
+        b"$2b$10$keO.ZZs22YtygVF6BLfhGOI/JjshJYPp8DZsUtym6mJV2Eha2Hdd.",
+    ),
+    (
+        b"g7\r\x01\xf3\xd4\xd0\xa9JB^\x18\x007P\xb2N\xc7\x1c\xee\x87&\x83C"
+        b"\x8b\xe8\x18\xc5>\x86\x14/\xd6\xcc\x1cJ\xde\xd7ix\xeb\xdeO\xef"
+        b"\xe1i\xac\xcb\x03\x96v1' \xd6@.m\xa5!\xa0\xef\xc0(",
+        b"$2a$04$tecY.9ylRInW/rAAzXCXPO",
+        b"$2a$04$tecY.9ylRInW/rAAzXCXPOOlyYeCNzmNTzPDNSIFztFMKbvs/s5XG",
+    ),
 ]
 
 _2y_test_vectors = [
@@ -161,39 +172,40 @@ _2y_test_vectors = [
 
 
 def test_gensalt_basic(monkeypatch):
-    monkeypatch.setattr(os, "urandom", lambda n: b"0000000000000000")
-    assert bcrypt.gensalt() == b"$2b$12$KB.uKB.uKB.uKB.uKB.uK."
+    salt = bcrypt.gensalt()
+    assert salt.startswith(b"$2b$12$")
 
 
 @pytest.mark.parametrize(
-    ("rounds", "expected"),
+    ("rounds", "expected_prefix"),
     [
-        (4, b"$2b$04$KB.uKB.uKB.uKB.uKB.uK."),
-        (5, b"$2b$05$KB.uKB.uKB.uKB.uKB.uK."),
-        (6, b"$2b$06$KB.uKB.uKB.uKB.uKB.uK."),
-        (7, b"$2b$07$KB.uKB.uKB.uKB.uKB.uK."),
-        (8, b"$2b$08$KB.uKB.uKB.uKB.uKB.uK."),
-        (9, b"$2b$09$KB.uKB.uKB.uKB.uKB.uK."),
-        (10, b"$2b$10$KB.uKB.uKB.uKB.uKB.uK."),
-        (11, b"$2b$11$KB.uKB.uKB.uKB.uKB.uK."),
-        (12, b"$2b$12$KB.uKB.uKB.uKB.uKB.uK."),
-        (13, b"$2b$13$KB.uKB.uKB.uKB.uKB.uK."),
-        (14, b"$2b$14$KB.uKB.uKB.uKB.uKB.uK."),
-        (15, b"$2b$15$KB.uKB.uKB.uKB.uKB.uK."),
-        (16, b"$2b$16$KB.uKB.uKB.uKB.uKB.uK."),
-        (17, b"$2b$17$KB.uKB.uKB.uKB.uKB.uK."),
-        (18, b"$2b$18$KB.uKB.uKB.uKB.uKB.uK."),
-        (19, b"$2b$19$KB.uKB.uKB.uKB.uKB.uK."),
-        (20, b"$2b$20$KB.uKB.uKB.uKB.uKB.uK."),
-        (21, b"$2b$21$KB.uKB.uKB.uKB.uKB.uK."),
-        (22, b"$2b$22$KB.uKB.uKB.uKB.uKB.uK."),
-        (23, b"$2b$23$KB.uKB.uKB.uKB.uKB.uK."),
-        (24, b"$2b$24$KB.uKB.uKB.uKB.uKB.uK."),
+        (4, b"$2b$04$"),
+        (5, b"$2b$05$"),
+        (6, b"$2b$06$"),
+        (7, b"$2b$07$"),
+        (8, b"$2b$08$"),
+        (9, b"$2b$09$"),
+        (10, b"$2b$10$"),
+        (11, b"$2b$11$"),
+        (12, b"$2b$12$"),
+        (13, b"$2b$13$"),
+        (14, b"$2b$14$"),
+        (15, b"$2b$15$"),
+        (16, b"$2b$16$"),
+        (17, b"$2b$17$"),
+        (18, b"$2b$18$"),
+        (19, b"$2b$19$"),
+        (20, b"$2b$20$"),
+        (21, b"$2b$21$"),
+        (22, b"$2b$22$"),
+        (23, b"$2b$23$"),
+        (24, b"$2b$24$"),
     ],
 )
-def test_gensalt_rounds_valid(rounds, expected, monkeypatch):
-    monkeypatch.setattr(os, "urandom", lambda n: b"0000000000000000")
-    assert bcrypt.gensalt(rounds) == expected
+def test_gensalt_rounds_valid(rounds, expected_prefix):
+    salt = bcrypt.gensalt(rounds)
+
+    assert salt.startswith(expected_prefix)
 
 
 @pytest.mark.parametrize("rounds", list(range(1, 4)))
@@ -204,12 +216,12 @@ def test_gensalt_rounds_invalid(rounds):
 
 def test_gensalt_bad_prefix():
     with pytest.raises(ValueError):
-        bcrypt.gensalt(prefix="bad")
+        bcrypt.gensalt(prefix=b"bad")
 
 
 def test_gensalt_2a_prefix(monkeypatch):
-    monkeypatch.setattr(os, "urandom", lambda n: b"0000000000000000")
-    assert bcrypt.gensalt(prefix=b"2a") == b"$2a$12$KB.uKB.uKB.uKB.uKB.uK."
+    salt = bcrypt.gensalt(prefix=b"2a")
+    assert salt.startswith(b"$2a$12$")
 
 
 @pytest.mark.parametrize(("password", "salt", "hashed"), _test_vectors)
@@ -258,34 +270,38 @@ def test_checkpw_bad_salt():
             b"badpass",
             b"$2b$04$?Siw3Nv3Q/gTOIPetAyPr.GNj3aO0lb1E5E9UumYGKjP9BYqlNWJe",
         )
+    with pytest.raises(ValueError):
+        bcrypt.checkpw(
+            b"password",
+            b"$2b$3$mdEQPMOtfPX.WGZNXgF66OhmBlOGKEd66SQ7DyJPGucYYmvTJYviy",
+        )
 
 
 def test_checkpw_str_password():
     with pytest.raises(TypeError):
-        bcrypt.checkpw("password", b"$2b$04$cVWp4XaNU8a4v1uMRum2SO")
+        bcrypt.checkpw("password", b"$2b$04$cVWp4XaNU8a4v1uMRum2SO")  # type: ignore[arg-type]
 
 
 def test_checkpw_str_salt():
     with pytest.raises(TypeError):
-        bcrypt.checkpw(b"password", "$2b$04$cVWp4XaNU8a4v1uMRum2SO")
+        bcrypt.checkpw(b"password", "$2b$04$cVWp4XaNU8a4v1uMRum2SO")  # type: ignore[arg-type]
 
 
 def test_hashpw_str_password():
     with pytest.raises(TypeError):
-        bcrypt.hashpw("password", b"$2b$04$cVWp4XaNU8a4v1uMRum2SO")
+        bcrypt.hashpw("password", b"$2b$04$cVWp4XaNU8a4v1uMRum2SO")  # type: ignore[arg-type]
 
 
 def test_hashpw_str_salt():
     with pytest.raises(TypeError):
-        bcrypt.hashpw(b"password", "$2b$04$cVWp4XaNU8a4v1uMRum2SO")
+        bcrypt.hashpw(b"password", "$2b$04$cVWp4XaNU8a4v1uMRum2SO")  # type: ignore[arg-type]
 
 
 def test_checkpw_nul_byte():
-    with pytest.raises(ValueError):
-        bcrypt.checkpw(
-            b"abc\0def",
-            b"$2b$04$2Siw3Nv3Q/gTOIPetAyPr.GNj3aO0lb1E5E9UumYGKjP9BYqlNWJe",
-        )
+    bcrypt.checkpw(
+        b"abc\0def",
+        b"$2b$04$2Siw3Nv3Q/gTOIPetAyPr.GNj3aO0lb1E5E9UumYGKjP9BYqlNWJe",
+    )
 
     with pytest.raises(ValueError):
         bcrypt.checkpw(
@@ -296,8 +312,13 @@ def test_checkpw_nul_byte():
 
 def test_hashpw_nul_byte():
     salt = bcrypt.gensalt(4)
-    with pytest.raises(ValueError):
-        bcrypt.hashpw(b"abc\0def", salt)
+    hashed = bcrypt.hashpw(b"abc\0def", salt)
+    assert bcrypt.checkpw(b"abc\0def", hashed)
+    # assert that we are sensitive to changes in the password after the first
+    # null byte:
+    assert not bcrypt.checkpw(b"abc\0deg", hashed)
+    assert not bcrypt.checkpw(b"abc\0def\0", hashed)
+    assert not bcrypt.checkpw(b"abc\0def\0\0", hashed)
 
 
 def test_checkpw_extra_data():
@@ -371,13 +392,13 @@ def test_checkpw_extra_data():
         [
             # longer password
             8,
-            b"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do "
-            b"eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut "
+            b"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do"
+            b" eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut "
             b"enim ad minim veniam, quis nostrud exercitation ullamco laboris "
             b"nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor "
-            b"in reprehenderit in voluptate velit esse cillum dolore eu fugiat "
-            b"nulla pariatur. Excepteur sint occaecat cupidatat non proident, "
-            b"sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            b"in reprehenderit in voluptate velit esse cillum dolore eu fugiat"
+            b" nulla pariatur. Excepteur sint occaecat cupidatat non proident,"
+            b" sunt in culpa qui officia deserunt mollit anim id est laborum.",
             b"salis\x00",
             b"\x10\x97\x8b\x07\x25\x3d\xf5\x7f\x71\xa1\x62\xeb\x0e\x8a\xd3\x0a",
         ],
@@ -413,8 +434,7 @@ def test_checkpw_extra_data():
         [
             # UTF-8 Greek characters "odysseus" / "telemachos"
             8,
-            b"\xe1\xbd\x88\xce\xb4\xcf\x85\xcf\x83\xcf\x83\xce\xb5\xcf\x8d\xcf"
-            b"\x82",
+            b"\xe1\xbd\x88\xce\xb4\xcf\x85\xcf\x83\xcf\x83\xce\xb5\xcf\x8d\xcf\x82",
             b"\xce\xa4\xce\xb7\xce\xbb\xce\xad\xce\xbc\xce\xb1\xcf\x87\xce\xbf"
             b"\xcf\x82",
             b"\x43\x66\x6c\x9b\x09\xef\x33\xed\x8c\x27\xe8\xe8\xf3\xe2\xd8\xe6",
@@ -430,12 +450,12 @@ def test_kdf(rounds, password, salt, expected):
 
 def test_kdf_str_password():
     with pytest.raises(TypeError):
-        bcrypt.kdf("password", b"$2b$04$cVWp4XaNU8a4v1uMRum2SO", 10, 10)
+        bcrypt.kdf("password", b"$2b$04$cVWp4XaNU8a4v1uMRum2SO", 10, 10)  # type: ignore[arg-type]
 
 
 def test_kdf_str_salt():
     with pytest.raises(TypeError):
-        bcrypt.kdf(b"password", "salt", 10, 10)
+        bcrypt.kdf(b"password", "salt", 10, 10)  # type: ignore[arg-type]
 
 
 def test_kdf_no_warn_rounds():
@@ -455,7 +475,7 @@ def test_kdf_warn_rounds():
         (b"", b"$2b$04$cVWp4XaNU8a4v1uMRum2SO", 10, 10, ValueError),
         (b"password", b"", 10, 10, ValueError),
         (b"password", b"$2b$04$cVWp4XaNU8a4v1uMRum2SO", 0, 10, ValueError),
-        (b"password", b"$2b$04$cVWp4XaNU8a4v1uMRum2SO", -3, 10, ValueError),
+        (b"password", b"$2b$04$cVWp4XaNU8a4v1uMRum2SO", -3, 10, OverflowError),
         (b"password", b"$2b$04$cVWp4XaNU8a4v1uMRum2SO", 513, 10, ValueError),
         (b"password", b"$2b$04$cVWp4XaNU8a4v1uMRum2SO", 20, 0, ValueError),
     ],
@@ -463,11 +483,6 @@ def test_kdf_warn_rounds():
 def test_invalid_params(password, salt, desired_key_bytes, rounds, error):
     with pytest.raises(error):
         bcrypt.kdf(password, salt, desired_key_bytes, rounds)
-
-
-def test_bcrypt_assert():
-    with pytest.raises(SystemError):
-        bcrypt._bcrypt_assert(False)
 
 
 def test_2a_wraparound_bug():
