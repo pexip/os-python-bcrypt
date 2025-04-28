@@ -5,11 +5,18 @@ XSBC-Pexip-Original-Uploaders: Simon Fondrie-Teitler <simonft@riseup.net>
 Section: python
 Priority: optional
 Build-Depends: debhelper-compat (= 13),
+               dh-sequence-builtusing,
                dh-python,
-               python3-all-dev,
-               python3-setuptools,
-               python3-cffi,
+               pybuild-plugin-pyproject,
+               python3-all,
                python3-pytest <!nocheck>,
+               python3-setuptools-rust,
+               librust-base64-dev,
+               librust-bcrypt-dev,
+               librust-bcrypt-pbkdf-dev,
+               librust-getrandom-dev,
+               librust-pyo3-dev,
+               librust-subtle-dev,
 Homepage: https://github.com/pyca/bcrypt
 Standards-Version: 4.6.0
 Vcs-Git: https://salsa.debian.org/python-team/packages/python-bcrypt.git
@@ -19,6 +26,12 @@ XS-Pexip-Upstream: http://deb.debian.org/debian/ trixie
 
 Package: python3-bcrypt
 Architecture: any
+Static-Built-Using:
+ ${dh-builtusing:librust-base64-dev},
+ ${dh-builtusing:librust-bcrypt-dev},
+ ${dh-builtusing:librust-bcrypt-pbkdf-dev},
+ ${dh-builtusing:librust-getrandom-dev},
+ ${dh-builtusing:librust-subtle-dev},
 Depends: ${python3:Depends}, ${misc:Depends}, ${shlibs:Depends}
 Description: password hashing library for Python 3
  bcrypt is a Python module which provides a password hashing method based on
