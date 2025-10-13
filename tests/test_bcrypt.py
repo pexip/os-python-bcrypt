@@ -1,3 +1,6 @@
+import uuid
+from concurrent.futures import ThreadPoolExecutor
+
 import pytest
 
 import bcrypt
@@ -171,7 +174,7 @@ _2y_test_vectors = [
 ]
 
 
-def test_gensalt_basic(monkeypatch):
+def test_gensalt_basic():
     salt = bcrypt.gensalt()
     assert salt.startswith(b"$2b$12$")
 
@@ -219,7 +222,7 @@ def test_gensalt_bad_prefix():
         bcrypt.gensalt(prefix=b"bad")
 
 
-def test_gensalt_2a_prefix(monkeypatch):
+def test_gensalt_2a_prefix():
     salt = bcrypt.gensalt(prefix=b"2a")
     assert salt.startswith(b"$2a$12$")
 
@@ -275,6 +278,8 @@ def test_checkpw_bad_salt():
             b"password",
             b"$2b$3$mdEQPMOtfPX.WGZNXgF66OhmBlOGKEd66SQ7DyJPGucYYmvTJYviy",
         )
+    with pytest.raises(ValueError):
+        bcrypt.checkpw(b"password", b"$2b$12$incorrect")
 
 
 def test_checkpw_str_password():
@@ -492,3 +497,24 @@ def test_2a_wraparound_bug():
         )
         == b"$2a$04$R1lJ2gkNaoPGdafE.H.16.1MKHPvmKwryeulRe225LKProWYwt9Oi"
     )
+
+
+def test_multithreading():
+    def create_user(pw):
+        salt = bcrypt.gensalt(4)
+        hash_ = bcrypt.hashpw(pw, salt)
+        key = bcrypt.kdf(pw, salt, 32, 50)
+        assert bcrypt.checkpw(pw, hash_)
+        return (salt, hash_, key)
+
+    user_creator = ThreadPoolExecutor(max_workers=4)
+    pws = [uuid.uuid4().bytes for _ in range(50)]
+
+    futures = [user_creator.submit(create_user, pw) for pw in pws]
+
+    users = [future.result() for future in futures]
+
+    for pw, (salt, hash_, key) in zip(pws, users):
+        assert bcrypt.hashpw(pw, salt) == hash_
+        assert bcrypt.checkpw(pw, hash_)
+        assert bcrypt.kdf(pw, salt, 32, 50) == key

@@ -1,3 +1,19 @@
+python-bcrypt (4.3.0-2) unstable; urgency=medium
+
+  * Team upload.
+  * Accept pyo3 0.26.
+
+ -- Colin Watson <cjwatson@debian.org>  Mon, 13 Oct 2025 11:25:04 +0100
+
+python-bcrypt (4.3.0-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream version 4.3.0
+  * Keep getrandom and bcrypt versions
+  * Upgrade pyo3 version (Closes: #1114296)
+
+ -- Bastian Germann <bage@debian.org>  Wed, 10 Sep 2025 17:27:25 +0200
+
 python-bcrypt (4.2.0-2.1) unstable; urgency=medium
 
   * Team upload.
