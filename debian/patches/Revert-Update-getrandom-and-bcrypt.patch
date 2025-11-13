@@ -1,0 +1,41 @@
+From: Bastian Germann <bage@debian.org>
+Date: Wed, 10 Sep 2025 16:22:10 +0200
+Subject: Revert "Update getrandom and bcrypt (#966)"
+
+This reverts commit 3181f2101ab370c73b1cbb83c38cb110e25d1fcb.
+---
+ src/_bcrypt/Cargo.toml | 4 ++--
+ src/_bcrypt/src/lib.rs | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/_bcrypt/Cargo.toml b/src/_bcrypt/Cargo.toml
+index 5c810db..bbf3457 100644
+--- a/src/_bcrypt/Cargo.toml
++++ b/src/_bcrypt/Cargo.toml
+@@ -7,11 +7,11 @@ publish = false
+ 
+ [dependencies]
+ pyo3 = { version = "0.23.5", features = ["abi3"] }
+-bcrypt = "0.17"
++bcrypt = "0.15"
+ bcrypt-pbkdf = "0.10.0"
+ base64 = "0.22.1"
+ subtle = "2.6"
+-getrandom = "0.3"
++getrandom = "0.2"
+ 
+ [features]
+ extension-module = ["pyo3/extension-module"]
+diff --git a/src/_bcrypt/src/lib.rs b/src/_bcrypt/src/lib.rs
+index 11cdba3..3f88f03 100644
+--- a/src/_bcrypt/src/lib.rs
++++ b/src/_bcrypt/src/lib.rs
+@@ -46,7 +46,7 @@ fn gensalt<'p>(
+     }
+ 
+     let mut salt = [0; 16];
+-    getrandom::fill(&mut salt).unwrap();
++    getrandom::getrandom(&mut salt).unwrap();
+ 
+     let encoded_salt = BASE64_ENGINE.encode(salt);
+ 

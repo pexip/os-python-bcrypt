@@ -16,6 +16,7 @@ use base64::Engine;
 use pyo3::types::PyBytesMethods;
 use pyo3::PyTypeInfo;
 use std::convert::TryInto;
+use std::ffi::CString;
 use std::io::Write;
 use subtle::ConstantTimeEq;
 
@@ -45,11 +46,11 @@ fn gensalt<'p>(
     }
 
     let mut salt = [0; 16];
-    getrandom::getrandom(&mut salt).unwrap();
+    getrandom::fill(&mut salt).unwrap();
 
     let encoded_salt = BASE64_ENGINE.encode(salt);
 
-    pyo3::types::PyBytes::new_bound_with(
+    pyo3::types::PyBytes::new_with(
         py,
         1 + prefix.len() + 1 + 2 + 1 + encoded_salt.len(),
         |mut b| {
@@ -82,14 +83,14 @@ fn hashpw<'p>(
     // salt here is not just the salt bytes, but rather an encoded value
     // containing a version number, number of rounds, and the salt.
     // Should be [prefix, cost, hash]. This logic is copied from `bcrypt`
-    let raw_parts: Vec<_> = salt
+    let [raw_version, raw_cost, remainder]: [&[u8]; 3] = salt
         .split(|&b| b == b'$')
         .filter(|s| !s.is_empty())
-        .collect();
-    if raw_parts.len() != 3 {
-        return Err(pyo3::exceptions::PyValueError::new_err("Invalid salt"));
-    }
-    let version = match raw_parts[0] {
+        .collect::<Vec<_>>()
+        .try_into()
+        .map_err(|_| pyo3::exceptions::PyValueError::new_err("Invalid salt"))?;
+
+    let version = match raw_version {
         b"2y" => bcrypt::Version::TwoY,
         b"2b" => bcrypt::Version::TwoB,
         b"2a" => bcrypt::Version::TwoA,
@@ -98,15 +99,20 @@ fn hashpw<'p>(
             return Err(pyo3::exceptions::PyValueError::new_err("Invalid salt"));
         }
     };
-    let cost = std::str::from_utf8(raw_parts[1])
+    let cost = std::str::from_utf8(raw_cost)
         .map_err(|_| pyo3::exceptions::PyValueError::new_err("Invalid salt"))?
         .parse::<u32>()
         .map_err(|_| pyo3::exceptions::PyValueError::new_err("Invalid salt"))?;
+
+    if remainder.len() < 22 {
+        return Err(pyo3::exceptions::PyValueError::new_err("Invalid salt"));
+    }
+
     // The last component can contain either just the salt, or the salt and
     // the result hash, depending on if the `salt` value come from `hashpw` or
     // `gensalt`.
     let raw_salt = BASE64_ENGINE
-        .decode(&raw_parts[2][..22])
+        .decode(&remainder[..22])
         .map_err(|_| pyo3::exceptions::PyValueError::new_err("Invalid salt"))?
         .try_into()
         .map_err(|_| pyo3::exceptions::PyValueError::new_err("Invalid salt"))?;
@@ -114,7 +120,7 @@ fn hashpw<'p>(
     let hashed = py
         .allow_threads(|| bcrypt::hash_with_salt(password, cost, raw_salt))
         .map_err(|_| pyo3::exceptions::PyValueError::new_err("Invalid salt"))?;
-    Ok(pyo3::types::PyBytes::new_bound(
+    Ok(pyo3::types::PyBytes::new(
         py,
         hashed.format_for_version(version).as_bytes(),
     ))
@@ -160,15 +166,15 @@ fn kdf<'p>(
         // They probably think bcrypt.kdf()'s rounds parameter is logarithmic,
         // expecting this value to be slow enough (it probably would be if this
         // were bcrypt). Emit a warning.
-        pyo3::PyErr::warn_bound(
+        pyo3::PyErr::warn(
             py,
-            &pyo3::exceptions::PyUserWarning::type_object_bound(py),
-            &format!("Warning: bcrypt.kdf() called with only {rounds} round(s). This few is not secure: the parameter is linear, like PBKDF2."),
+            &pyo3::exceptions::PyUserWarning::type_object(py),
+            &CString::new(format!("Warning: bcrypt.kdf() called with only {rounds} round(s). This few is not secure: the parameter is linear, like PBKDF2.")).unwrap(),
             3
         )?;
     }
 
-    pyo3::types::PyBytes::new_bound_with(py, desired_key_bytes, |output| {
+    pyo3::types::PyBytes::new_with(py, desired_key_bytes, |output| {
         py.allow_threads(|| {
             bcrypt_pbkdf::bcrypt_pbkdf(password, salt, rounds, output).unwrap();
         });
@@ -176,7 +182,7 @@ fn kdf<'p>(
     })
 }
 
-#[pyo3::pymodule]
+#[pyo3::pymodule(gil_used = false)]
 mod _bcrypt {
     use pyo3::types::PyModuleMethods;
 
@@ -196,14 +202,14 @@ mod _bcrypt {
         // When updating this, also update pyproject.toml
         // This isn't named __version__ because passlib treats the existence of
         // that attribute as proof that we're a different module
-        m.add("__version_ex__", "4.2.0")?;
+        m.add("__version_ex__", "4.3.0")?;
 
         let author = "The Python Cryptographic Authority developers";
         m.add("__author__", author)?;
         m.add("__email__", "cryptography-dev@python.org")?;
 
         m.add("__license__", "Apache License, Version 2.0")?;
-        m.add("__copyright__", format!("Copyright 2013-2024 {author}"))?;
+        m.add("__copyright__", format!("Copyright 2013-2025 {author}"))?;
 
         Ok(())
     }
