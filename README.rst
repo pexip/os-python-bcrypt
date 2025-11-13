@@ -17,7 +17,7 @@ Installation
 
 To install bcrypt, simply:
 
-.. code:: bash
+.. code:: console
 
     $ pip install bcrypt
 
@@ -26,19 +26,19 @@ compiler and a Rust compiler (the minimum supported Rust version is 1.56.0).
 
 For Debian and Ubuntu, the following command will ensure that the required dependencies are installed:
 
-.. code:: bash
+.. code:: console
 
     $ sudo apt-get install build-essential cargo
 
 For Fedora and RHEL-derivatives, the following command will ensure that the required dependencies are installed:
 
-.. code:: bash
+.. code:: console
 
     $ sudo yum install gcc cargo
 
 For Alpine, the following command will ensure that the required dependencies are installed:
 
-.. code:: bash
+.. code:: console
 
     $ apk add --update musl-dev gcc cargo
 
@@ -50,6 +50,22 @@ While bcrypt remains an acceptable choice for password storage, depending on you
 
 Changelog
 =========
+
+Unreleased
+----------
+
+* Dropped support for Python 3.7.
+* We now support free-threaded Python 3.13.
+* We now support PyPy 3.11.
+* We now publish wheels for free-threaded Python 3.13, for PyPy 3.11 on
+  ``manylinux``, and for ARMv7l on ``manylinux``.
+
+4.2.1
+-----
+
+* Bump Rust dependency versions - this should resolve crashes on Python 3.13
+  free-threaded builds.
+* We no longer build ``manylinux`` wheels for PyPy 3.9.
 
 4.2.0
 -----
@@ -273,7 +289,7 @@ Compatibility
 -------------
 
 This library should be compatible with py-bcrypt and it will run on Python
-3.6+, and PyPy 3.
+3.8+ (including free-threaded builds), and PyPy 3.
 
 Security
 --------
