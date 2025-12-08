@@ -5,7 +5,7 @@ Section: python
 Priority: optional
 Build-Depends: debhelper-compat (= 13),
                dh-sequence-builtusing,
-               dh-python,
+               dh-sequence-python3,
                pybuild-plugin-pyproject,
                python3-all,
                python3-pytest <!nocheck>,
@@ -14,11 +14,11 @@ Build-Depends: debhelper-compat (= 13),
                librust-bcrypt-dev,
                librust-bcrypt-pbkdf-dev,
                librust-getrandom-dev,
-               librust-pyo3-dev (>= 0.23.5),
-               librust-pyo3-dev (<< 0.27),
+               librust-pyo3-dev (>= 0.26),
+               librust-pyo3-dev (<< 0.28),
                librust-subtle-dev,
 Homepage: https://github.com/pyca/bcrypt
-Standards-Version: 4.6.0
+Standards-Version: 4.7.2
 Vcs-Git: https://salsa.debian.org/python-team/packages/python-bcrypt.git
 Vcs-Browser: https://salsa.debian.org/python-team/packages/python-bcrypt
 Rules-Requires-Root: no
@@ -32,6 +32,7 @@ Static-Built-Using:
  ${dh-builtusing:librust-getrandom-dev},
  ${dh-builtusing:librust-subtle-dev},
 Depends: ${python3:Depends}, ${misc:Depends}, ${shlibs:Depends}
+Breaks: python3-passlib (<< 1.9.3-1~)
 Description: password hashing library for Python 3
  bcrypt is a Python module which provides a password hashing method based on
  the Blowfish password hashing algorithm, as described in
