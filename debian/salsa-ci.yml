@@ -1,0 +1,7 @@
+---
+include:
+  - https://salsa.debian.org/salsa-ci-team/pipeline/raw/master/recipes/debian.yml
+
+variables:
+  # False positives for Rust: https://bugs.debian.org/1037521
+  SALSA_CI_DISABLE_BLHC: 1
