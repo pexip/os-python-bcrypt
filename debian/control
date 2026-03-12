@@ -34,7 +34,7 @@ Static-Built-Using:
  ${dh-builtusing:librust-getrandom-dev},
  ${dh-builtusing:librust-subtle-dev},
 Depends: ${python3:Depends}, ${misc:Depends}, ${shlibs:Depends}
-Breaks: python3-passlib (<< 1.9.3-1~)
+#Breaks: python3-passlib (<< 1.9.3-1~)
 Description: password hashing library for Python 3
  bcrypt is a Python module which provides a password hashing method based on
  the Blowfish password hashing algorithm, as described in

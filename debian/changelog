@@ -1,3 +1,9 @@
+python-bcrypt (5.0.0-3+pexip25u2) pexip-trixie; urgency=medium
+
+  * d/p: revert Raise ValueError if password is longer than 72 bytes
+
+ -- Huw Jones <huw@pexip.com>  Thu, 12 Mar 2026 16:14:14 +0000
+
 python-bcrypt (5.0.0-3+pexip25u1) pexip-trixie; urgency=medium
 
   * New upstream release
