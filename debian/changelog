@@ -3,7 +3,7 @@ python-bcrypt (5.0.0-3+pexip25u1) pexip-trixie; urgency=medium
   * New upstream release
   * d/p: remove invalid classifiers from pyproject.toml
 
- -- Huw Jones <huw@pexip.com>  Thu, 13 Nov 2025 10:52:41 +0000
+ -- Huw Jones <huw@pexip.com>  Wed, 11 Mar 2026 12:14:39 +0000
 
 python-bcrypt (5.0.0-3) unstable; urgency=medium
 
