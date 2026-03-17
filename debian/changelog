@@ -1,3 +1,9 @@
+python-bcrypt (5.0.0-4) unstable; urgency=medium
+
+  * Accept pyo3 0.28.
+
+ -- Jelmer Vernooĳ <jelmer@debian.org>  Tue, 17 Mar 2026 10:01:51 +0000
+
 python-bcrypt (5.0.0-3) unstable; urgency=medium
 
   * Team upload.
