@@ -1,3 +1,9 @@
+python-bcrypt (5.0.0-4+pexip25u1) pexip-trixie; urgency=medium
+
+  * New upstream release
+
+ -- Huw Jones <huw@pexip.com>  Mon, 23 Mar 2026 13:45:46 +0000
+
 python-bcrypt (5.0.0-4) unstable; urgency=medium
 
   * Accept pyo3 0.28.
