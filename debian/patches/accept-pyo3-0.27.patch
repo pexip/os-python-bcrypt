@@ -1,9 +1,9 @@
 From: Colin Watson <cjwatson@debian.org>
 Date: Wed, 3 Dec 2025 15:29:48 +0000
-Subject: Accept pyo3 0.27
+Subject: Accept pyo3 0.27 and 0.28
 
 Forwarded: not-needed
-Last-Update: 2025-12-03
+Last-Update: 2026-03-17
 ---
  src/_bcrypt/Cargo.toml | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -14,10 +14,10 @@ index 27cbc09..1e99465 100644
 +++ b/src/_bcrypt/Cargo.toml
 @@ -8,7 +8,7 @@ rust-version = "1.74.0"
  publish = false
- 
+
  [dependencies]
 -pyo3 = { version = "0.26", features = ["abi3"] }
-+pyo3 = { version = ">=0.26,<0.28", features = ["abi3"] }
++pyo3 = { version = ">=0.26,<0.29", features = ["abi3"] }
  bcrypt = "0.15"
  bcrypt-pbkdf = "0.10.0"
  base64 = "0.22.1"
